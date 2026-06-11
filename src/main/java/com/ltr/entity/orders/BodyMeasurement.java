@@ -5,16 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@MappedSuperclass
-public abstract class BodyMeasurement {
+public class BodyMeasurement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private String type;
     @Column(nullable = false)
     private String materialType;
@@ -38,4 +37,7 @@ public abstract class BodyMeasurement {
     private Double calf;
     private Double ankle;
     private Double instep;
+
+    @OneToOne(mappedBy = "bodyMeasurement")
+    private Orders order;
 }

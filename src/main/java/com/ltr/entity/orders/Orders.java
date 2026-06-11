@@ -1,8 +1,9 @@
 package com.ltr.entity.orders;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ltr.entity.products.Products;
 import com.ltr.entity.users.Users;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,18 +22,20 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Double amount;
+    @Nonnull
+    private Double totalAmount;
     private LocalDateTime placedDate;
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany
-    @JsonManagedReference
-    @JoinColumn(name = "ordered_product_id")
-    private List<OrderedProduct> orderedProduct;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Products product;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "body_measurement_id")
+    private BodyMeasurement bodyMeasurement;
 }

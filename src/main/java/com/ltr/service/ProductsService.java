@@ -137,4 +137,8 @@ public class ProductsService {
         return "All products successfully deleted for category "+itemType;
     }
 
+    public boolean isProductExistById(Long id){
+        return productsRepository.existsById(id);
+    }
+
 }

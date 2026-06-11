@@ -1,11 +1,15 @@
 package com.ltr.entity.products;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ltr.entity.orders.Orders;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -17,20 +21,24 @@ public class Products {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Nonnull
+    @Column(nullable = false)
     private String mainCategory;
-    @Nonnull
+    @Column(nullable = false)
     private String subCategory;
-    @Nonnull
+    @Column(nullable = false)
     private String itemName;
-    @Nonnull
+    @Column(nullable = false)
     private String itemType;
-    @Nonnull
+    @Column(nullable = false)
     private Double price;
     private String description;
     private String imageName;
     private String imageType;
     @Lob
-    @Nonnull
+    @Column(nullable = false)
     private byte[] image;
+
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Orders> orders;
 }

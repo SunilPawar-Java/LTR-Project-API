@@ -14,11 +14,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handelUserNotFoundException(UserNotFoundException userNotFoundException){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("errorMessage", userNotFoundException.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", userNotFoundException.getLocalizedMessage()));
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<?> handleProductNotFoundException(ProductNotFoundException productNotFoundException){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("errorMessage", productNotFoundException.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", productNotFoundException.getLocalizedMessage()));
     }
 }
