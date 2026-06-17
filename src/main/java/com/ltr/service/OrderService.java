@@ -68,4 +68,12 @@ public class OrderService {
         ordersRepository.save(order);
         return "Order Updated Successfully...";
     }
+
+    public String cancelOrder(Long id, String status){
+        if (!ordersRepository.existsById(id)){
+            throw new OrderNotFoundException("Order Not Found for id "+id);
+        }
+        ordersRepository.updateStatus(id,status);
+        return "Order Canceled Successfully...";
+    }
 }

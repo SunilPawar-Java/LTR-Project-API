@@ -1,6 +1,7 @@
 package com.ltr.service;
 
 import com.ltr.dao.ProductDao;
+import com.ltr.mapper.Mapper;
 import com.ltr.module.Products;
 import com.ltr.exception.ProductNotFoundException;
 import com.ltr.repository.ProductsRepository;
@@ -20,17 +21,7 @@ public class ProductsService {
     }
 
     public String addProduct(ProductDao productDao) throws IOException {
-        Products product = new Products();
-        product.setMainCategory(productDao.getMainCategory());
-        product.setSubCategory(productDao.getSubCategory());
-        product.setItemType(productDao.getItemType());
-        product.setItemName(productDao.getItemName());
-        product.setPrice(productDao.getPrice());
-        product.setDescription(productDao.getDescription());
-        product.setImageName(productDao.getImage().getOriginalFilename());
-        product.setImageType(productDao.getImage().getContentType());
-        product.setImage(productDao.getImage().getBytes());
-        productsRepository.save(product);
+        productsRepository.save(Mapper.mapToProducts(productDao));
         return "Product Added Successfully";
     }
 
@@ -41,12 +32,12 @@ public class ProductsService {
 
     public Products getProductById(Long id) {
         return productsRepository.findById(id)
-                .orElseThrow(()-> new ProductNotFoundException("No Product Found for id "+id));
+                .orElseThrow(()-> new ProductNotFoundException("Product Not Found for id "+id));
     }
 
     public byte[] getProductImageById(Long id){
         return productsRepository.findById(id)
-                .orElseThrow(()-> new ProductNotFoundException("Not Image Found for id "+id)).getImage();
+                .orElseThrow(()-> new ProductNotFoundException("Image Not Found for id "+id)).getImage();
     }
 
     @Transactional
@@ -140,5 +131,4 @@ public class ProductsService {
     public boolean isProductExistById(Long id){
         return productsRepository.existsById(id);
     }
-
 }

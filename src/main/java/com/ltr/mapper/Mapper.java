@@ -4,9 +4,9 @@ import com.ltr.dao.ProductDao;
 import com.ltr.dao.UsersDao;
 import com.ltr.dao.OrderDao;
 import com.ltr.module.Orders;
+import com.ltr.module.Products;
 import com.ltr.module.Users;
-import org.jspecify.annotations.NonNull;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class Mapper {
         return opDao;
     }
 
-    private static @NonNull ProductDao mapToProductDao(Orders order) {
+    private static ProductDao mapToProductDao(Orders order) {
         ProductDao productDao = new ProductDao();
         productDao.setId(order.getProduct().getId());
         productDao.setItemName(order.getProduct().getItemName());
@@ -69,4 +69,19 @@ public class Mapper {
         });
         return opdaoList;
     }
+
+    public static Products mapToProducts(ProductDao productDao) throws IOException {
+        Products product = new Products();
+        product.setMainCategory(productDao.getMainCategory());
+        product.setSubCategory(productDao.getSubCategory());
+        product.setItemType(productDao.getItemType());
+        product.setItemName(productDao.getItemName());
+        product.setPrice(productDao.getPrice());
+        product.setDescription(productDao.getDescription());
+        product.setImageName(productDao.getImage().getOriginalFilename());
+        product.setImageType(productDao.getImage().getContentType());
+        product.setImage(productDao.getImage().getBytes());
+        return product;
+    }
+
 }

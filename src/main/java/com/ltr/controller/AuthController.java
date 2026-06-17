@@ -1,10 +1,12 @@
 package com.ltr.controller;
 
+import com.ltr.dao.UsersDao;
 import com.ltr.module.Users;
 import com.ltr.service.UsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/user")
@@ -31,4 +33,18 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.FOUND).body(usersService.getUser(id));
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UsersDao usersDao){
+        return ResponseEntity.ok(usersService.updateUserProfile(id, usersDao));
+    }
+
+    @PatchMapping("/password/{id}")
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody String password){
+        return ResponseEntity.ok(usersService.updatePassword(id, password));
+    }
+
+    @PatchMapping("/username/{id}")
+    public ResponseEntity<?> changeUsername(@PathVariable Long id, @RequestBody String username){
+        return ResponseEntity.ok(usersService.changeUsername(id, username));
+    }
 }

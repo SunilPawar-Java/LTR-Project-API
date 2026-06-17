@@ -42,4 +42,9 @@ public class OrderController {
     public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody OrderDao orderDao){
         return ResponseEntity.ok(orderService.updateOrderById(id, orderDao));
     }
+
+    @PatchMapping("/update/status/{id}")
+    public ResponseEntity<?> cancelOrder(@PathVariable Long id, @RequestParam("status") String status){
+        return ResponseEntity.ok(orderService.cancelOrder(id,status));
+    }
 }
