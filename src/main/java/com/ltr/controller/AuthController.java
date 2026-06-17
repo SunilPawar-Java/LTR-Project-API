@@ -47,4 +47,9 @@ public class AuthController {
     public ResponseEntity<?> changeUsername(@PathVariable Long id, @RequestBody String username){
         return ResponseEntity.ok(usersService.changeUsername(id, username));
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteAccount(@PathVariable Long id){
+        return ResponseEntity.ok(usersService.deleteAccount(id));
+    }
 }
