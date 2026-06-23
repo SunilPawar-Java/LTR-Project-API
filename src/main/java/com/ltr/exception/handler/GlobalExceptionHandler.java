@@ -36,4 +36,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                 .body(Map.of("message", userAlreadyExistsException.getMessage()));
     }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<?> jwtExceptionHandler(JwtException jwtException){
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of(
+                "message", jwtException.getMessage()
+        ));
+    }
 }

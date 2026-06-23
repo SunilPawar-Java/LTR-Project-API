@@ -1,6 +1,7 @@
 package com.ltr.model.security;
 
 import com.ltr.model.Users;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,7 @@ public class UserSecurityDetails implements UserDetails {
     }
 
     @Override
+    @NonNull
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(user.getRole().toString()));
     }
@@ -28,6 +30,7 @@ public class UserSecurityDetails implements UserDetails {
     }
 
     @Override
+    @NonNull
     public String getUsername() {
         return user.getUsername();
     }

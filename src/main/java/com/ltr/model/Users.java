@@ -1,6 +1,5 @@
 package com.ltr.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,8 +28,9 @@ public class Users {
     private Role role;
     @Column(nullable = false)
     private String fullName;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String phone;
+    @Column(unique = true)
     private String email;
     @Column(nullable = false)
     private String address;

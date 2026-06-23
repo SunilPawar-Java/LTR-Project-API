@@ -1,35 +1,59 @@
 package com.ltr.controller;
 
 import com.ltr.model.security.LoginRequest;
-import com.ltr.service.security.UserSecurityDetailsService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
+import com.ltr.model.security.UserSecurityDetails;
+import com.ltr.service.security.JwtService;
+//import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpSession;
+//import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+//import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final AuthenticationManager authManager;
-    private final UserSecurityDetailsService userSecurityDetailsService;
+    private final JwtService jwt;
 
-    public AuthController(AuthenticationManager authManager, UserSecurityDetailsService userSecurityDetailsService) {
+    public AuthController(AuthenticationManager authManager, JwtService jwt) {
         this.authManager = authManager;
-        this.userSecurityDetailsService = userSecurityDetailsService;
+        this.jwt = jwt;
     }
 
     @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+        Authentication auth = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+        );
+            SecurityContext secContext = SecurityContextHolder.createEmptyContext();
+            secContext.setAuthentication(auth);
+            SecurityContextHolder.setContext(secContext);
+            String jwtToken = jwt.generateToken((UserSecurityDetails) Objects.requireNonNull(auth.getPrincipal()));
+            return ResponseEntity.ok(Map.of(
+                    "message", "Login Successful",
+                    "JToken", jwtToken
+            ));
+    }
+
+
+
+
+
+
+/*
+
+    // Session-Based....
+    @GetMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpRequest){
         try {
             Authentication auth = authManager.authenticate(
@@ -60,5 +84,6 @@ public class AuthController {
         request.getSession(false).invalidate();
         return ResponseEntity.ok(Map.of("message", "Log Out successfully"));
     }
+*/
 
 }

@@ -17,7 +17,8 @@ public class UserSecurityDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        return new UserSecurityDetails(usersService.getUserByUsername(username));
+    @NonNull
+    public UserDetails loadUserByUsername(@NonNull String identity) throws UsernameNotFoundException {
+        return new UserSecurityDetails(usersService.getUserByUsernameOrEmailOrPhone(identity));
     }
 }

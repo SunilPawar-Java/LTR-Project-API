@@ -7,6 +7,7 @@ import com.ltr.exception.UserNotFoundException;
 import com.ltr.mapper.Mapper;
 import com.ltr.repository.UsersRepository;
 import jakarta.transaction.Transactional;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -76,6 +77,11 @@ public class UsersService {
         return usersRepository.findByUsername(username).orElseThrow(()->
                 new UserNotFoundException("User Not Found For Username -> " + username));
     }
+
+    public Users getUserByUsernameOrEmailOrPhone(String identity){
+        return usersRepository.findByUsernameOrEmailOrPhone(identity, identity, identity).orElseThrow(()-> new UserNotFoundException("User Not Found For "+identity));
+    }
+
     public boolean isExistsByUsername(String username){
         return usersRepository.existsByUsername(username);
     }
@@ -131,4 +137,5 @@ public class UsersService {
         usersRepository.deleteById(id);
         return "Account Deleted SuccessFully...";
     }
+
 }
