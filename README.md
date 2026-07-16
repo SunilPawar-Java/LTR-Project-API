@@ -1,4 +1,4 @@
-**#Tailor Management System**
+#Tailor Management System
 
 A full-stack web application for managing customer measurements, orders, and custom clothing stitching.
 
